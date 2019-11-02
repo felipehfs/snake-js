@@ -3,7 +3,7 @@ class Apple {
     constructor() {
         this.x = null;
         this.y = null;
-        this.scale = 15;
+        this.scale = 10;
     }
 
     setLocation() {

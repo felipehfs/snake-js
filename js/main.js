@@ -1,3 +1,4 @@
+'use strict';
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 
@@ -8,7 +9,6 @@ class GameState {
         this.game = null;
         const x = Math.floor(Math.random() * canvas.width / 2);
         const y = Math.floor( Math.random() * canvas.height / 2);
-
         this.snake = new Snake(x, y);
     }
 
@@ -23,8 +23,7 @@ class GameState {
     }
 
     update() {
-        this.snake.eat(this.apple);
-        this.snake.update(canvas);
+        this.snake.update(canvas, this.apple);
     }
 
     keyDown(key) {

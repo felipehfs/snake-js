@@ -33,7 +33,7 @@ class Snake {
         }
     }
 
-    update(canvas) {
+    update(canvas, apple) {
 
         for(let i =0; i < this.tail.length - 1; i++) {
             this.tail[i] = this.tail[i + 1];
@@ -65,6 +65,8 @@ class Snake {
         if (this.y < 0) {
             this.y = canvas.height;
         }
+        
+        this.eat(apple)
     }
 
     keyDown(key) {
