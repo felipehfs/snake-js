@@ -22,8 +22,8 @@ class Snake {
     }
 
     isCollide(apple) {
-        return apple.x > this.x && apple.x < this.x + this.scale 
-            && apple.y > this.scale && apple.y < this.y + this.scale;
+        return apple.x < this.x  + this.scale && apple.x + apple.scale > this.x 
+            && apple.y < this.y + this.scale && apple.y + apple.scale > this.y;
     }
 
     eat(apple) {
