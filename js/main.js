@@ -37,6 +37,10 @@ class GameState {
             return;
         }
 
+        if (key === "p") {
+            this.game.pushState(new PauseState());
+        }
+
 
         this.snake.keyDown(key);
     }
@@ -70,13 +74,41 @@ class IntroState {
 }
 
 
+class PauseState {
+    constructor(game) {
+        this.game = game;
+    }
+
+    draw(ctx) {
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#fff';
+        ctx.font = '18px Impact';
+        ctx.fillText("Pause Game", canvas.width / 2 - 150,  canvas.height / 2);
+
+    }
+
+    update() {
+        
+    }
+
+    keyDown(key) {
+        if (key === 'p') {
+            this.game.popState();
+        }
+    }
+}
+
+
+
 
 
 class Game {
     
     constructor() {
+        this.states = [];
         this.currentState = new IntroState(this);
-        this.prevState = null;
+        this.states.push(this.currentState);
     }
 
     update() {
@@ -87,12 +119,12 @@ class Game {
 
     pushState(state) {
         state.game = this;
-        this.prevState = this.currentState;
+        this.states.push(this.currentState);
         this.currentState = state;
     }
 
     popState() {
-        this.currentState = this.prevState;
+        this.currentState = this.states.pop();
     }
 
     draw() {
