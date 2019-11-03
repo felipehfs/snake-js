@@ -29,15 +29,18 @@ class GameState {
     keyDown(key) {
         if (key === "Escape") {
             this.game.popState();
+            this.game.mixer.stopSong();
             return;
         }
 
         if (key === "Backspace") {
             this.game.popState();
+            this.game.mixer.stopSong();
             return;
         }
 
         if (key === "p") {
+            this.game.mixer.pauseSong();
             this.game.pushState(new PauseState());
         }
 
@@ -47,6 +50,7 @@ class GameState {
 }
 
 class IntroState {
+
     constructor(game) {
         this.game = game;
     }
@@ -68,6 +72,7 @@ class IntroState {
 
     keyDown(key) {
         if (key === 'Enter') {
+            this.game.mixer.playSong('acidTrumpet');
             this.game.pushState(new GameState());
         }
     }
@@ -94,6 +99,7 @@ class PauseState {
 
     keyDown(key) {
         if (key === 'p') {
+            this.game.mixer.pauseSong();
             this.game.popState();
         }
     }
@@ -107,6 +113,7 @@ class Game {
     
     constructor() {
         this.states = [];
+        this.mixer = new AudioMixer();
         this.currentState = new IntroState(this);
         this.states.push(this.currentState);
     }
@@ -138,6 +145,37 @@ class Game {
     }
 }
 
+class AudioMixer {
+    
+    constructor() {
+        this.actualSong = null;
+        this.sounds = {
+            acidTrumpet: new Audio('../assets/acid-trumpet-by-kevin-macleod.mp3'),
+        };
+
+        this.soundsEfects = {};
+    }
+
+
+    playSong(songName, loop=true) {
+        this.actualSong = this.sounds[songName];
+        this.actualSong.play(); 
+        this.actualSong.loop = loop;
+    }
+
+    pauseSong() {
+        if (this.actualSong.paused) {
+            this.actualSong.play();
+        }else {
+            this.actualSong.pause();
+        }
+    }
+
+    stopSong() {
+        this.actualSong.pause();
+        this.actualSong.currentTime = 0;
+    }
+}
 
 const game = new Game();
 
