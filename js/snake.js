@@ -1,4 +1,4 @@
-const MAX_SPEED = 2;
+const MAX_SPEED = 160;
 
 class Snake {
 
@@ -33,7 +33,7 @@ class Snake {
         }
     }
 
-    update(canvas, apple) {
+    update(canvas, apple, delta) {
 
         for(let i =0; i < this.tail.length - 1; i++) {
             this.tail[i] = this.tail[i + 1];
@@ -47,8 +47,8 @@ class Snake {
                 scale: this.scale,
             };
 
-        this.x += this.speedX;
-        this.y += this.speedY;
+        this.x += this.speedX * delta / 1000;
+        this.y += this.speedY * delta / 1000;
 
         if (this.x > canvas.width) {
             this.x = 0;

@@ -1,6 +1,7 @@
 'use strict';
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
+let before = new Date().getTime();
 
 class GameState {
     constructor() {
@@ -22,8 +23,8 @@ class GameState {
         ctx.fillText(this.snake.total, canvas.width - 50, 40);
     }
 
-    update() {
-        this.snake.update(canvas, this.apple);
+    update(delta) {
+        this.snake.update(canvas, this.apple, delta);
     }
 
     keyDown(key) {
@@ -66,7 +67,7 @@ class IntroState {
         ctx.fillText("Press enter to play\n or esc to back", canvas.width / 2 - 150,  canvas.height / 2 + 25);
     }
 
-    update() {
+    update(delta) {
         
     }
 
@@ -118,9 +119,9 @@ class Game {
         this.states.push(this.currentState);
     }
 
-    update() {
+    update(delta) {
         if (this.currentState){
-            this.currentState.update();
+            this.currentState.update(delta);
         }
     }
 
@@ -183,13 +184,16 @@ function draw() {
     game.draw();
 }
 
-function update() {
-    game.update();
+function update(delta) {
+    game.update(delta);
 }
 
 function loop() {
-    update();
+    const now = new Date().getTime();
+    let elapsed = now - before;
+    update(elapsed);
     draw();
+    before = now;
     window.requestAnimationFrame(loop.bind(this));
 }
 
@@ -197,4 +201,4 @@ window.addEventListener('keydown', event => {
     game.keyDown(event.key);
 });
 
-loop();
+requestAnimationFrame(loop);
